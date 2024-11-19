@@ -1,0 +1,44 @@
+# SERVER
+server:
+  port: ${SERVER_PORT:0}
+  servlet:
+    contextPath: /api/v1
+
+# SPRING
+spring:
+  jackson:
+    default-property-inclusion: non_null
+  application:
+    name: @project.artifactId@
+    version: @project.version@
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  main:
+    allow-bean-definition-overriding: true
+
+# SPRING ACTUATOR
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+        
+#logging.level.org.apache.http: DEBUG
+#logging.level.org.springframework.web.client.RestTemplate: DEBUG
+#logging.level.org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor: DEBUG
+#logging.level.ROOT: DEBUG
+
+timeouts:
+  MAX_TOTAL_CONNECTIONS: 5
+  CONNECT_TIMEOUT: 9000
+  REQUEST_TIMEOUT: 9000
+  SOCKET_TIMEOUT: 9000
+  CONN_TIME_TO_LIVE: 15
+  VALIDATE_AFTER_INACTIVITY: 5
+  DEFAULT_MAX_PER_ROUTE: 5
+  THREAD_TIMEOUT: 5000
+  IDLE_TIMEOUT: 30        
+        
+restTemplate:
