@@ -13,4 +13,6 @@ public interface AuthService {
 
     ApiTokenVO refreshToken(RefreshTokenRequestVO refreshTokenRequest);
 
+    void logout(String authorization);
+
 }

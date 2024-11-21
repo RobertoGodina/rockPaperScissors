@@ -106,6 +106,23 @@ public class AuthServiceImpl implements AuthService {
         return response;
     }
 
+    @Override
+    public void logout(String authorization) {
+
+        UserDB user = userRepository.findByApiToken(authorization.substring(7))
+                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
+
+        user.setApiToken(null);
+        user.setRefreshToken(null);
+
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            log.severe("Database logout error" + e.getMessage());
+            throw new RuntimeException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
+        }
+    }
+
     private UserDB validateUser(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_USER.getReasonPhrase()));

@@ -51,4 +51,14 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.OK).body(authService.refreshToken(refreshTokenRequest));
     }
+
+    @PostMapping(value = "/logout", produces = {"application/json"})
+    public ResponseEntity<String> logout(
+            @RequestHeader(name = "Authorization") String authorization,
+            @RequestHeader(required = false, name = "X-Correlation-Id") String correlationId) {
+        MDC.put("correlationId", correlationId != null ? correlationId : UUID.randomUUID().toString());
+
+        authService.logout(authorization);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
