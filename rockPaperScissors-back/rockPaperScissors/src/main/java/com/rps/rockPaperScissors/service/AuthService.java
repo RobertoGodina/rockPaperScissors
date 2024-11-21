@@ -5,7 +5,7 @@ import com.rps.rockPaperScissors.domain.register.UserRequestVO;
 import com.rps.rockPaperScissors.domain.token.ApiTokenVO;
 import com.rps.rockPaperScissors.domain.token.RefreshTokenRequestVO;
 
-public interface RockPaperScissorsService {
+public interface AuthService {
 
     void register(UserRequestVO user);
 

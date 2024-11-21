@@ -9,30 +9,27 @@ import com.rps.rockPaperScissors.exception.AppErrorCode;
 import com.rps.rockPaperScissors.exception.CustomException;
 import com.rps.rockPaperScissors.repository.UserRepository;
 import com.rps.rockPaperScissors.service.JwtTokenService;
-import com.rps.rockPaperScissors.service.RockPaperScissorsService;
+import com.rps.rockPaperScissors.service.AuthService;
 import com.rps.rockPaperScissors.service.mapper.UserDatabaseMapperService;
 import lombok.extern.java.Log;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Optional;
-
 @Log
 @Service
 @Transactional
-public class RockPaperScissorsServiceImpl implements RockPaperScissorsService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserDatabaseMapperService userDatabaseMapperService;
     private final JwtTokenService jwtTokenService;
 
-    public RockPaperScissorsServiceImpl(UserRepository userRepository,
-                                        BCryptPasswordEncoder passwordEncoder,
-                                        UserDatabaseMapperService userDatabaseMapperService,
-                                        JwtTokenService jwtTokenService) {
+    public AuthServiceImpl(UserRepository userRepository,
+                           BCryptPasswordEncoder passwordEncoder,
+                           UserDatabaseMapperService userDatabaseMapperService,
+                           JwtTokenService jwtTokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userDatabaseMapperService = userDatabaseMapperService;

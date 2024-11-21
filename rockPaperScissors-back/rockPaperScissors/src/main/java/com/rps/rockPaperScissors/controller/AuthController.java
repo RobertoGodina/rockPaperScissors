@@ -4,7 +4,7 @@ import com.rps.rockPaperScissors.domain.login.LoginRequestVO;
 import com.rps.rockPaperScissors.domain.register.UserRequestVO;
 import com.rps.rockPaperScissors.domain.token.ApiTokenVO;
 import com.rps.rockPaperScissors.domain.token.RefreshTokenRequestVO;
-import com.rps.rockPaperScissors.service.RockPaperScissorsService;
+import com.rps.rockPaperScissors.service.AuthService;
 import jakarta.validation.Valid;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
@@ -18,10 +18,10 @@ import java.util.UUID;
 @RequestMapping("/auth")
 public class AuthController {
 
-    public RockPaperScissorsService rockPaperScissorsService;
+    public AuthService authService;
 
-    public AuthController(RockPaperScissorsService rockPaperScissorsService) {
-        this.rockPaperScissorsService = rockPaperScissorsService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping(value = "/login", produces = {"application/json"})
@@ -30,7 +30,7 @@ public class AuthController {
             @RequestHeader(required = false, name = "X-Correlation-Id") String correlationId) {
         MDC.put("correlationId", correlationId != null ? correlationId : UUID.randomUUID().toString());
 
-        return ResponseEntity.status(HttpStatus.OK).body(rockPaperScissorsService.login(loginRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginRequest));
     }
 
     @PostMapping(value = "/register", produces = {"application/json"})
@@ -39,7 +39,7 @@ public class AuthController {
             @RequestHeader(required = false, name = "X-Correlation-Id") String correlationId) {
         MDC.put("correlationId", correlationId != null ? correlationId : UUID.randomUUID().toString());
 
-        rockPaperScissorsService.register(userRequest);
+        authService.register(userRequest);
         return ResponseEntity.created(URI.create("")).build();
     }
 
@@ -49,6 +49,6 @@ public class AuthController {
             @RequestHeader(required = false, name = "X-Correlation-Id") String correlationId) {
         MDC.put("correlationId", correlationId != null ? correlationId : UUID.randomUUID().toString());
 
-        return ResponseEntity.status(HttpStatus.OK).body(rockPaperScissorsService.refreshToken(refreshTokenRequest));
+        return ResponseEntity.status(HttpStatus.OK).body(authService.refreshToken(refreshTokenRequest));
     }
 }
