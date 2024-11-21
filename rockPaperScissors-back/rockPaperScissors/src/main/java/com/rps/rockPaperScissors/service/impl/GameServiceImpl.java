@@ -1,6 +1,7 @@
 package com.rps.rockPaperScissors.service.impl;
 
-import com.rps.rockPaperScissors.domain.GameHistory;
+import com.rps.rockPaperScissors.domain.AchievementsDB;
+import com.rps.rockPaperScissors.domain.GameHistoryDB;
 import com.rps.rockPaperScissors.domain.UserDB;
 import com.rps.rockPaperScissors.domain.game.GameHistoryResponseVO;
 import com.rps.rockPaperScissors.domain.game.GameResult;
@@ -8,6 +9,7 @@ import com.rps.rockPaperScissors.domain.game.Move;
 import com.rps.rockPaperScissors.domain.game.PlayResponseVO;
 import com.rps.rockPaperScissors.exception.AppErrorCode;
 import com.rps.rockPaperScissors.exception.CustomException;
+import com.rps.rockPaperScissors.repository.AchievementsRepository;
 import com.rps.rockPaperScissors.repository.GameHistoryRepository;
 import com.rps.rockPaperScissors.repository.UserRepository;
 import com.rps.rockPaperScissors.service.GameService;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Log
 @Service
@@ -26,13 +29,16 @@ public class GameServiceImpl implements GameService {
     private final GameHistoryRepository gameHistoryRepository;
     private final UserRepository userRepository;
     private final GameHistoryMapperService gameHistoryMapperService;
+    private final AchievementsRepository achievementsRepository;
 
     public GameServiceImpl(GameHistoryRepository gameHistoryRepository,
                            UserRepository userRepository,
-                           GameHistoryMapperService gameHistoryMapperService) {
+                           GameHistoryMapperService gameHistoryMapperService,
+                           AchievementsRepository achievementsRepository) {
         this.gameHistoryRepository = gameHistoryRepository;
         this.gameHistoryMapperService = gameHistoryMapperService;
         this.userRepository = userRepository;
+        this.achievementsRepository = achievementsRepository;
     }
 
 
@@ -46,6 +52,7 @@ public class GameServiceImpl implements GameService {
         GameResult gameResult = decideWinner(userMove, computerMove);
 
         saveGameHistory(user, userMove, computerMove, gameResult);
+        updateAchievements(user, userMove, gameResult);
 
         return new PlayResponseVO(userMove, computerMove, gameResult);
     }
@@ -56,22 +63,52 @@ public class GameServiceImpl implements GameService {
         UserDB user = userRepository.findByApiToken(authorization.substring(7))
                 .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
-        List<GameHistory> gameHistories = gameHistoryRepository.findByUser(user)
+        List<GameHistoryDB> gameHistories = gameHistoryRepository.findByUser(user)
                 .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_USER.getReasonPhrase()));
 
         return gameHistoryMapperService.getGameHistories(gameHistories);
 
     }
 
-    public void saveGameHistory(UserDB user, Move userMove, Move computerMove, GameResult gameResult) {
-        GameHistory gameHistory = new GameHistory();
-        gameHistory.setUser(user);
-        gameHistory.setUserMove(userMove);
-        gameHistory.setComputerMove(computerMove);
-        gameHistory.setResult(gameResult);
+    public void updateAchievements(UserDB user, Move userMove, GameResult gameResult) {
+        AchievementsDB achievements = achievementsRepository.findByUser(user);
+
+        if (achievements == null) {
+            achievements = new AchievementsDB();
+            achievements.setUser(user);
+        }
+
+        switch (userMove) {
+            case SCISSORS -> achievements.setScissorsPlayed(achievements.getScissorsPlayed() + 1);
+            case ROCK -> achievements.setRockPlayed(achievements.getRockPlayed() + 1);
+            case PAPER -> achievements.setPaperPlayed(achievements.getPaperPlayed() + 1);
+        }
+
+        switch (gameResult) {
+            case LOSE -> achievements.setGamesLost(achievements.getGamesLost() + 1);
+            case WIN -> achievements.setGamesWon(achievements.getGamesWon() + 1);
+            case TIE -> achievements.setGamesTied(achievements.getGamesTied() + 1);
+        }
+
+        achievements.setGamesPlayed(achievements.getGamesPlayed() + 1);
 
         try {
-            gameHistoryRepository.save(gameHistory);
+            achievementsRepository.save(achievements);
+
+        } catch (Exception e) {
+            throw new CustomException(AppErrorCode.BUSI_SQL.getReasonPhrase());
+        }
+    }
+
+    public void saveGameHistory(UserDB user, Move userMove, Move computerMove, GameResult gameResult) {
+        GameHistoryDB gameHistoryDB = new GameHistoryDB();
+        gameHistoryDB.setUser(user);
+        gameHistoryDB.setUserMove(userMove);
+        gameHistoryDB.setComputerMove(computerMove);
+        gameHistoryDB.setResult(gameResult);
+
+        try {
+            gameHistoryRepository.save(gameHistoryDB);
 
         } catch (Exception e) {
             throw new CustomException(AppErrorCode.BUSI_SQL.getReasonPhrase());

@@ -10,7 +10,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +17,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "gameHistory")
-public class GameHistory {
+public class GameHistoryDB {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
