@@ -12,6 +12,7 @@ public enum AppErrorCode implements Serializable {
 	BUSI_USERNAME("Username already exists"),
 	BUSI_EMAIL("Email already exists"),
 	BUSI_USER("Invalid username"),
+	BUSI_USERNAME_DB("Username not found"),
 	BUSI_REFRESH_TOKEN("Invalid refresh token");
 
 	private final String reasonPhrase;
