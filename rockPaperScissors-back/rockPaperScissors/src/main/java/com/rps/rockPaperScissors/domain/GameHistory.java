@@ -37,7 +37,7 @@ public class GameHistory {
     @Column(nullable = false)
     private GameResult result;
 
-    @Column(name = "modification_date")
+    @Column(name = "played_at")
     @CreationTimestamp
     private LocalDateTime playedAt;
 

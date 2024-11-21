@@ -2,27 +2,21 @@ package com.rps.rockPaperScissors.service.impl;
 
 import com.rps.rockPaperScissors.domain.GameHistory;
 import com.rps.rockPaperScissors.domain.UserDB;
+import com.rps.rockPaperScissors.domain.game.GameHistoryResponseVO;
 import com.rps.rockPaperScissors.domain.game.GameResult;
 import com.rps.rockPaperScissors.domain.game.Move;
 import com.rps.rockPaperScissors.domain.game.PlayResponseVO;
-import com.rps.rockPaperScissors.domain.login.LoginRequestVO;
-import com.rps.rockPaperScissors.domain.register.UserRequestVO;
-import com.rps.rockPaperScissors.domain.token.ApiTokenVO;
-import com.rps.rockPaperScissors.domain.token.RefreshTokenRequestVO;
 import com.rps.rockPaperScissors.exception.AppErrorCode;
 import com.rps.rockPaperScissors.exception.CustomException;
 import com.rps.rockPaperScissors.repository.GameHistoryRepository;
 import com.rps.rockPaperScissors.repository.UserRepository;
-import com.rps.rockPaperScissors.service.AuthService;
 import com.rps.rockPaperScissors.service.GameService;
-import com.rps.rockPaperScissors.service.JwtTokenService;
-import com.rps.rockPaperScissors.service.mapper.UserDatabaseMapperService;
+import com.rps.rockPaperScissors.service.mapper.GameHistoryMapperService;
 import lombok.extern.java.Log;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.List;
 
 @Log
 @Service
@@ -31,13 +25,13 @@ public class GameServiceImpl implements GameService {
 
     private final GameHistoryRepository gameHistoryRepository;
     private final UserRepository userRepository;
-    private final JwtTokenService jwtTokenService;
+    private final GameHistoryMapperService gameHistoryMapperService;
 
     public GameServiceImpl(GameHistoryRepository gameHistoryRepository,
                            UserRepository userRepository,
-                           JwtTokenService jwtTokenService) {
+                           GameHistoryMapperService gameHistoryMapperService) {
         this.gameHistoryRepository = gameHistoryRepository;
-        this.jwtTokenService = jwtTokenService;
+        this.gameHistoryMapperService = gameHistoryMapperService;
         this.userRepository = userRepository;
     }
 
@@ -45,10 +39,8 @@ public class GameServiceImpl implements GameService {
     @Override
     public PlayResponseVO play(Move userMove, String authorization) {
 
-        String username = jwtTokenService.validateToken(authorization.substring(7));
-
-        UserDB user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_USERNAME_DB.getReasonPhrase()));
+        UserDB user = userRepository.findByApiToken(authorization.substring(7))
+                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
         Move computerMove = Move.getRandomMove();
         GameResult gameResult = decideWinner(userMove, computerMove);
@@ -56,6 +48,19 @@ public class GameServiceImpl implements GameService {
         saveGameHistory(user, userMove, computerMove, gameResult);
 
         return new PlayResponseVO(userMove, computerMove, gameResult);
+    }
+
+    @Override
+    public List<GameHistoryResponseVO> gameHistory(String authorization) {
+
+        UserDB user = userRepository.findByApiToken(authorization.substring(7))
+                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
+
+        List<GameHistory> gameHistories = gameHistoryRepository.findByUser(user)
+                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_USER.getReasonPhrase()));
+
+        return gameHistoryMapperService.getGameHistories(gameHistories);
+
     }
 
     public void saveGameHistory(UserDB user, Move userMove, Move computerMove, GameResult gameResult) {

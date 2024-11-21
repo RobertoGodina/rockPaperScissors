@@ -1,4 +1,8 @@
 package com.rps.rockPaperScissors.utils;
+import com.rps.rockPaperScissors.domain.UserDB;
+import com.rps.rockPaperScissors.exception.AppErrorCode;
+import com.rps.rockPaperScissors.exception.CustomException;
+import com.rps.rockPaperScissors.repository.UserRepository;
 import com.rps.rockPaperScissors.service.JwtTokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,10 +18,12 @@ import java.io.IOException;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private JwtTokenService jwtTokenService;
+    private final JwtTokenService jwtTokenService;
+    private final UserRepository userRepository;
 
-    public JwtTokenFilter(JwtTokenService jwtTokenService) {
+    public JwtTokenFilter(JwtTokenService jwtTokenService, UserRepository userRepository) {
         this.jwtTokenService = jwtTokenService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -30,6 +36,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
             try {
                 String username = jwtTokenService.validateToken(token);
+
+                UserDB user = userRepository.findByUsername(username)
+                        .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_SQL.getReasonPhrase())
+                );
+
+                if(!user.getApiToken().equals(token)){
+                    throw new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase());
+                }
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(username, null, null);
