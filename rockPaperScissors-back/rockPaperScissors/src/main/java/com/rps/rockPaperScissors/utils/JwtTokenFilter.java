@@ -1,4 +1,5 @@
 package com.rps.rockPaperScissors.utils;
+
 import com.rps.rockPaperScissors.domain.UserDB;
 import com.rps.rockPaperScissors.exception.AppErrorCode;
 import com.rps.rockPaperScissors.exception.CustomException;
@@ -39,9 +40,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
                 UserDB user = userRepository.findByUsername(username)
                         .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_SQL.getReasonPhrase())
-                );
+                        );
 
-                if(!user.getApiToken().equals(token)){
+                if (!user.getApiToken().equals(token)) {
                     throw new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase());
                 }
 

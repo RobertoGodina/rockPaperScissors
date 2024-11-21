@@ -13,10 +13,10 @@ public class GameHistoryMapperService {
 
     private static final ModelMapper modelMapper = new ModelMapper();
 
-    public List<GameHistoryResponseVO> getGameHistories(List<GameHistoryDB> gameHistories){
+    public List<GameHistoryResponseVO> getGameHistories(List<GameHistoryDB> gameHistories) {
         List<GameHistoryResponseVO> response = new ArrayList<>();
 
-        for(GameHistoryDB item: gameHistories){
+        for (GameHistoryDB item : gameHistories) {
             response.add(modelMapper.map(item, GameHistoryResponseVO.class));
         }
         return response;

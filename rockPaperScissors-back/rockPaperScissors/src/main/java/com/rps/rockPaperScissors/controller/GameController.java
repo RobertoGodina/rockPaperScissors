@@ -4,7 +4,6 @@ import com.rps.rockPaperScissors.domain.game.GameHistoryResponseVO;
 import com.rps.rockPaperScissors.domain.game.Move;
 import com.rps.rockPaperScissors.domain.game.PlayResponseVO;
 import com.rps.rockPaperScissors.service.GameService;
-import jakarta.validation.Valid;
 import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

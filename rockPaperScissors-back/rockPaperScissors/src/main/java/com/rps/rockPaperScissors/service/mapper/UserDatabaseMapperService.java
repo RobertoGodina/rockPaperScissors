@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class UserDatabaseMapperService {
     private static final ModelMapper modelMapper = new ModelMapper();
 
-    public UserDB buildUserEntity(UserRequestVO userRequest){
+    public UserDB buildUserEntity(UserRequestVO userRequest) {
         return modelMapper.map(userRequest, UserDB.class);
     }
 

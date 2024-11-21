@@ -22,7 +22,6 @@ public class AchievementsController {
         this.achievementsService = achievementsService;
     }
 
-
     @GetMapping(produces = {"application/json"})
     public ResponseEntity<GetAchievementsResponseVO> gameHistory(
             @RequestHeader(name = "Authorization") String authorization,

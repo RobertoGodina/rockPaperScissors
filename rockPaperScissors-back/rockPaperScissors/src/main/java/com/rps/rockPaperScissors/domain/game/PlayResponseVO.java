@@ -1,6 +1,5 @@
 package com.rps.rockPaperScissors.domain.game;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Getter
