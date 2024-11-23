@@ -2,6 +2,7 @@ package com.rps.rockPaperScissors.service.mapper;
 
 import com.rps.rockPaperScissors.domain.UserDB;
 import com.rps.rockPaperScissors.domain.register.UserRequestVO;
+import com.rps.rockPaperScissors.domain.user.GetUserResponseVO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,10 @@ public class UserDatabaseMapperService {
 
     public UserDB buildUserEntity(UserRequestVO userRequest) {
         return modelMapper.map(userRequest, UserDB.class);
+    }
+
+    public GetUserResponseVO buildReturnUser(UserDB userDB) {
+        return modelMapper.map(userDB, GetUserResponseVO.class);
     }
 
 }

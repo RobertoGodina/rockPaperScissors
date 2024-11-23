@@ -64,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
         UserDB user = validateUser(loginRequest.getUsername());
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid username or password");
+            throw new CustomException("Invalid username or password");
         }
 
         ApiTokenVO response = new ApiTokenVO(jwtTokenService.generateToken(loginRequest.getUsername()),

@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     public AuthService authService;
@@ -52,7 +53,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(authService.refreshToken(refreshTokenRequest));
     }
 
-    @PostMapping(value = "/logout", produces = {"application/json"})
+    @PostMapping(value = "/logout")
     public ResponseEntity<String> logout(
             @RequestHeader(name = "Authorization") String authorization,
             @RequestHeader(required = false, name = "X-Correlation-Id") String correlationId) {
