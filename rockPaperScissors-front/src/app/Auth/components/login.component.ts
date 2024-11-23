@@ -8,7 +8,7 @@ import {
 import { Store } from '@ngrx/store';
 import { AuthState } from '../reducers/auth.reducer';
 import { login } from '../actions';
-import { LoginRequest } from '../models/loginRequest.dto';
+import { LoginDTO } from '../models/login.dto';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void { }
 
   async login() {
-    const credentials: LoginRequest = {
+    const credentials: LoginDTO = {
       username: this.username.value,
       password: this.password.value,
     };

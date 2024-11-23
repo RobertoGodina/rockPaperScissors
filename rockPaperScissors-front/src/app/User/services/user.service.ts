@@ -1,17 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LoginDTO } from '../models/login.dto';
-
-interface AuthToken {
-  apiToken: string;
-  refreshApiToken: string;
-}
+import { RegisterDTO } from '../models/register.dto';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class UserService {
   private urlRockPaperScissorsApi: string;
   private controller: string;
 
@@ -20,11 +15,11 @@ export class AuthService {
     this.urlRockPaperScissorsApi = 'http://localhost:56578/api/v1/' + this.controller;
   }
 
-  login(loginRequest: LoginDTO): Observable<AuthToken> {
-    return this.http.post<AuthToken>(this.urlRockPaperScissorsApi + '/login', loginRequest);
-  }
+  register(registerRequest: RegisterDTO): Observable<void> {
+    console.log("llegoo")
+    console.log(registerRequest)
 
-  logout(): Observable<void> {
-    return this.http.post<void>(this.urlRockPaperScissorsApi + '/logout', null);
+
+    return this.http.post<void>(this.urlRockPaperScissorsApi + '/register', registerRequest);
   }
 }

@@ -4,8 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './Shared/components/header/header.component';
 import { FooterComponent } from './Shared/components/footer/footer.component';
-import { HomeComponent } from './User/components/home/home.component';
-import { RegisterComponent } from './User/components/register/register.component';
+import { HomeComponent } from './Game/components/home/home.component';
 import { LoginComponent } from './Auth/components/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
@@ -14,19 +13,20 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { appReducers, EffectsArray } from './app.reducers';
 import { InterceptorService } from './Shared/services/interceptor.service';
+import { UserModule } from './User/user.module';
+import { AuthModule } from './Auth/auth.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    HomeComponent,
-    RegisterComponent,
-    LoginComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+
     ReactiveFormsModule,
     StoreModule.forRoot(appReducers, {
       runtimeChecks: {
@@ -37,7 +37,9 @@ import { InterceptorService } from './Shared/services/interceptor.service';
     EffectsModule.forRoot(EffectsArray),
     StoreDevtoolsModule.instrument({
       maxAge: 25
-    })
+    }),
+    UserModule,
+    AuthModule
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
