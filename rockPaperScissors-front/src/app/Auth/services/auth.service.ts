@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LoginRequest } from '../Models/loginRequest.dto';
+import { LoginRequest } from '../models/loginRequest.dto';
 
 interface AuthToken {
   apiToken: string;

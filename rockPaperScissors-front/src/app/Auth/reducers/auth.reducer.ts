@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { AuthDTO } from '../../Models/auth.dto';
+import { AuthDTO } from '../models/auth.dto';
 import { login, loginFailure, loginSuccess, logout, logoutSuccess } from '../actions/auth.actions';
 
 

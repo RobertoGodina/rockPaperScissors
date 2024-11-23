@@ -5,8 +5,8 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { login, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from '../actions';
-import { AuthService } from '../../Services/auth.service';
-import { ResponseError, SharedService } from 'src/app/shared.service';
+import { AuthService } from '../services/auth.service';
+import { ResponseError, SharedService } from 'src/app/Shared/services/shared.service';
 
 @Injectable()
 export class AuthEffects {

@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { AuthDTO } from '../../Models/auth.dto';
+import { AuthDTO } from '../models/auth.dto';
 import { HttpErrorResponse } from '@angular/common/http';
-import { LoginRequest } from 'src/app/Models/loginRequest.dto';
+import { LoginRequest } from 'src/app/Auth/models/loginRequest.dto';
 
 export const login = createAction(
     '[Login Page] Login',

@@ -6,9 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AuthState } from '../Auth/reducers/auth.reducer';
-import { login } from '../Auth/actions';
-import { LoginRequest } from '../Models/loginRequest.dto';
+import { AuthState } from '../reducers/auth.reducer';
+import { login } from '../actions';
+import { LoginRequest } from '../models/loginRequest.dto';
 
 @Component({
   selector: 'app-login',

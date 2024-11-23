@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { switchMap, take } from 'rxjs/operators';
-import { AppState } from './app.reducers';
+import { AppState } from '../../app.reducers';
 
 @Injectable({
   providedIn: 'root',
