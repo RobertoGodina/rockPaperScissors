@@ -18,6 +18,11 @@ export const loginFailure = createAction(
     props<{ payload: HttpErrorResponse }>()
 );
 
+export const updateCredentials = createAction(
+    '[Update Credentials] Update credentials success',
+    props<{ credentials: AuthDTO }>()
+);
+
 export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] Logout Success');
 export const logoutFailure = createAction('[Auth] Logout Failure', (error: any) => ({ error }));

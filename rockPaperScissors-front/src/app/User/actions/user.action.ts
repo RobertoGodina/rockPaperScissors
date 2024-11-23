@@ -18,11 +18,11 @@ export const registerFailure = createAction(
 
 export const updateUser = createAction(
     '[Profile Page] Update User',
-    props<{ apiToken: string; user: UserDTO }>()
+    props<{ user: UserDTO }>()
 );
 export const updateUserSuccess = createAction(
     '[Profile Page] Update User Success',
-    props<{ apiToken: string; user: UserDTO }>()
+    props<{ user: UserDTO }>()
 );
 
 export const updateUserFailure = createAction(
@@ -36,7 +36,7 @@ export const getUserByApiToken = createAction(
 );
 export const getUserByApiTokenSuccess = createAction(
     '[Profile Page] Get user by ApiToken Success',
-    props<{ apiToken: string; user: UserDTO }>()
+    props<{ user: UserDTO }>()
 );
 
 export const getUserByApiTokenFailure = createAction(

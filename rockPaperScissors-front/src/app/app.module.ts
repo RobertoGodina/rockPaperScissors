@@ -15,13 +15,15 @@ import { appReducers, EffectsArray } from './app.reducers';
 import { InterceptorService } from './Shared/services/interceptor.service';
 import { UserModule } from './User/user.module';
 import { AuthModule } from './Auth/auth.module';
+import { ProfileComponent } from './User/components/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    HomeComponent
+    HomeComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

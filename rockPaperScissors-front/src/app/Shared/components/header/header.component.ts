@@ -49,6 +49,10 @@ export class HeaderComponent implements OnInit {
     this.router.navigateByUrl('register');
   }
 
+  profile(): void {
+    this.router.navigateByUrl('profile');
+  }
+
   logout(): void {
     this.store.dispatch(logout());
   }
