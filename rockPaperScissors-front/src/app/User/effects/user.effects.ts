@@ -10,7 +10,6 @@ import { updateCredentials } from 'src/app/Auth/actions';
 import { AuthDTO } from 'src/app/Auth/models/auth.dto';
 import { Store } from '@ngrx/store';
 
-
 @Injectable()
 export class UserEffects {
   private responseOK: boolean;
@@ -91,13 +90,6 @@ export class UserEffects {
           catchError((error) => {
             return of(UserActions.getUserByApiTokenFailure({ payload: error }));
           }),
-          finalize(async () => {
-            await this.sharedService.managementToast(
-              'registerFeedback',
-              this.responseOK,
-              this.errorResponse
-            );
-          })
         )
       )
     )
@@ -131,12 +123,7 @@ export class UserEffects {
           catchError((error) => {
             return of(UserActions.updateUserFailure({ payload: error }));
           }),
-          finalize(async () => {
-            await this.sharedService.managementToast(
-              'registerFeedback',
-              this.responseOK,
-              this.errorResponse
-            );
+          finalize(() => {
             if (this.responseOK) {
               this.router.navigateByUrl('play');
             }
@@ -163,8 +150,6 @@ export class UserEffects {
       ),
     { dispatch: false }
   );
-
-
 
   updateUserFailure$ = createEffect(
     () =>

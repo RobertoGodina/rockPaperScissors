@@ -3,10 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, finalize, map, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
-
 import { login, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from '../actions';
 import { AuthService } from '../services/auth.service';
-import { ResponseError, SharedService } from 'src/app/Shared/services/shared.service';
+import { SharedService } from 'src/app/Shared/services/shared.service';
 
 @Injectable()
 export class AuthEffects {

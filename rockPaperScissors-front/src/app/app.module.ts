@@ -13,7 +13,6 @@ import { appReducers, EffectsArray } from './app.reducers';
 import { InterceptorService } from './Shared/services/interceptor.service';
 import { UserModule } from './User/user.module';
 import { AuthModule } from './Auth/auth.module';
-import { ProfileComponent } from './User/components/profile/profile.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatCardModule } from '@angular/material/card';
 import { GameModule } from './Game/game.module';
@@ -24,7 +23,6 @@ import { MatIconModule } from '@angular/material/icon';
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatIconModule,
     ReactiveFormsModule,
+
     StoreModule.forRoot(appReducers, {
       runtimeChecks: {
         strictStateImmutability: false,

@@ -1,34 +1,32 @@
-<div style="margin-left: auto; margin-right: auto">
-  <p id="loginFeedback"></p>
-</div>
-<div>
-  <h1>Login</h1>
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div>
-      <label for="username">Username: </label>
-      <input type="text" [formControl]="username" />
-    </div>
+<div class="login-container">
+  <div id="loginFeedback"></div>
 
-    <div>
-      <label for="password">Password: </label>
-      <input type="password" [formControl]="password" />
-    </div>
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
 
-    <button type="submit" [disabled]="!loginForm.valid">Login</button>
-  </form>
-</div>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput type="text" [formControl]="username" />
+          <mat-error *ngIf="username.errors?.['required']">Username is required</mat-error>
+          <mat-error *ngIf="username.errors?.['pattern']">Username is not a valid format</mat-error>
+        </mat-form-field>
 
-<div *ngIf="username.errors">
-  <span style="color: red" *ngIf="username.errors && (username.touched || username.dirty)">
-    <span *ngIf="username.errors['required']">Username is required</span>
-    <div *ngIf="username.errors['pattern']">Username not a valid format.</div>
-  </span>
-</div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" [formControl]="password" />
+          <mat-error *ngIf="password.errors?.['required']">Password is required</mat-error>
+          <mat-error *ngIf="password.errors?.['minlength']">Password must be at least 8 characters</mat-error>
+          <mat-error *ngIf="password.errors?.['maxlength']">Password cannot exceed 16 characters</mat-error>
+        </mat-form-field>
 
-<div *ngIf="password.errors">
-  <span style="color: red" *ngIf="password.errors && (password.touched || password.dirty)">
-    <span *ngIf="password.errors['required']">Password is required</span>
-    <span *ngIf="password.errors['minlength']">Password must be greater tha 8 characters</span>
-    <span *ngIf="password.errors['maxlength']">Password can be max 16 characters long</span>
-  </span>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
+          Login
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

@@ -1,78 +1,77 @@
-.error {
-    color: red;
-}
-
 #loginFeedback {
-    visibility: hidden;
-    min-width: 250px;
-    color: #fff;
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 300px;
+    padding: 12px 20px;
+    color: white;
     text-align: center;
-    border-radius: 10px;
-    padding: 16px;
-    z-index: 1;
     font-size: 14px;
-    margin-left: auto;
-    margin-right: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    visibility: hidden;
+    z-index: 1000;
 }
 
 #loginFeedback.requestOk {
-    background-color: green;
+    background-color: #4caf50;
 }
 
 #loginFeedback.requestKo {
-    background-color: red;
+    background-color: #f44336;
 }
 
 #loginFeedback.show {
     visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.3s, fadeout 0.3s 2.5s;
 }
 
-@-webkit-keyframes fadein {
-    from {
-        bottom: 0;
-        opacity: 0;
-    }
-
-    to {
-        bottom: 30px;
-        opacity: 1;
-    }
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-@keyframes fadein {
-    from {
-        bottom: 0;
-        opacity: 0;
-    }
-
-    to {
-        bottom: 30px;
-        opacity: 1;
-    }
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background: white;
 }
 
-@-webkit-keyframes fadeout {
-    from {
-        bottom: 30px;
-        opacity: 1;
-    }
-
-    to {
-        bottom: 0;
-        opacity: 0;
-    }
+.login-card mat-card-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-@keyframes fadeout {
-    from {
-        bottom: 30px;
-        opacity: 1;
-    }
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
-    to {
-        bottom: 0;
-        opacity: 0;
-    }
+.full-width {
+    width: 100%;
+}
+
+button {
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 4px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
 }
