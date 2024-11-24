@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/game")
+@CrossOrigin(origins = "http://localhost:4200")
 public class GameController {
 
     public GameService gameService;
@@ -22,10 +23,10 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @PostMapping(value = "/play", produces = {"application/json"})
+    @GetMapping(value = "/play", produces = {"application/json"})
     public ResponseEntity<PlayResponseVO> play(
             @RequestParam Move userMove,
-            @RequestHeader(name = "Authorization") String authorization,
+            @RequestHeader(required = false, name = "Authorization") String authorization,
             @RequestHeader(required = false, name = "X-Correlation-Id") String correlationId) {
         MDC.put("correlationId", correlationId != null ? correlationId : UUID.randomUUID().toString());
 

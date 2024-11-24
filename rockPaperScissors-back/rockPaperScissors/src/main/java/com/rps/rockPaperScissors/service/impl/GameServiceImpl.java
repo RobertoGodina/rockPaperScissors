@@ -44,14 +44,17 @@ public class GameServiceImpl implements GameService {
     @Override
     public PlayResponseVO play(Move userMove, String authorization) {
 
-        UserDB user = userRepository.findByApiToken(authorization.substring(7))
-                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
-
         Move computerMove = Move.getRandomMove();
         GameResult gameResult = decideWinner(userMove, computerMove);
 
-        saveGameHistory(user, userMove, computerMove, gameResult);
-        updateAchievements(user, userMove, gameResult);
+        if (authorization != null) {
+
+            UserDB user = userRepository.findByApiToken(authorization.substring(7))
+                    .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
+
+            saveGameHistory(user, userMove, computerMove, gameResult);
+            updateAchievements(user, userMove, gameResult);
+        }
 
         return new PlayResponseVO(userMove, computerMove, gameResult);
     }
