@@ -4,8 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './Shared/components/header/header.component';
 import { FooterComponent } from './Shared/components/footer/footer.component';
-import { HomeComponent } from './Game/components/home/home.component';
-import { LoginComponent } from './Auth/components/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
@@ -16,19 +14,22 @@ import { InterceptorService } from './Shared/services/interceptor.service';
 import { UserModule } from './User/user.module';
 import { AuthModule } from './Auth/auth.module';
 import { ProfileComponent } from './User/components/profile/profile.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { MatCardModule } from '@angular/material/card';
+import { GameModule } from './Game/game.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    HomeComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-
+    MatCardModule,
     ReactiveFormsModule,
     StoreModule.forRoot(appReducers, {
       runtimeChecks: {
@@ -41,7 +42,8 @@ import { ProfileComponent } from './User/components/profile/profile.component';
       maxAge: 25
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    GameModule
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
@@ -50,7 +52,8 @@ import { ProfileComponent } from './User/components/profile/profile.component';
       useClass: InterceptorService,
       multi: true,
 
-    }],
+    },
+    provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

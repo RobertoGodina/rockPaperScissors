@@ -37,8 +37,8 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  home(): void {
-    this.router.navigateByUrl('home');
+  play(): void {
+    this.router.navigateByUrl('play');
   }
 
   login(): void {

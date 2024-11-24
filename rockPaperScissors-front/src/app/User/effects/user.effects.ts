@@ -138,7 +138,7 @@ export class UserEffects {
               this.errorResponse
             );
             if (this.responseOK) {
-              this.router.navigateByUrl('home');
+              this.router.navigateByUrl('play');
             }
           })
         )

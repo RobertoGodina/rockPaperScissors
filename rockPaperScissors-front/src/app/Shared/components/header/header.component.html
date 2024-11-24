@@ -2,14 +2,14 @@
 
 <!-- NO AUTH REQUIRED -->
 <div *ngIf="showNoAuthSection">
-  <button (click)="home()">Home</button>
+  <button (click)="play()">Play</button>
   <button (click)="login()">Login</button>
   <button (click)="register()">Register</button>
 </div>
 
 <!-- AUTH REQUIRED -->
 <div *ngIf="showAuthSection">
-  <button (click)="home()">Home</button>
+  <button (click)="play()">Play</button>
   <button (click)="profile()">Profile</button>
   <button (click)="logout()">Logout</button>
 </div>

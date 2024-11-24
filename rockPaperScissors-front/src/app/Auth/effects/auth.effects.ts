@@ -47,7 +47,7 @@ export class AuthEffects {
                         );
 
                         if (this.responseOK) {
-                            this.router.navigateByUrl('home');
+                            this.router.navigateByUrl('play');
                         }
                     })
                 )
@@ -59,7 +59,7 @@ export class AuthEffects {
             this.actions$.pipe(
                 ofType(loginSuccess),
                 map(() => {
-                    this.responseOK = true;
+                    this.responseOK = true
                 })
             ),
         { dispatch: false }
@@ -93,6 +93,18 @@ export class AuthEffects {
                 return of(logoutFailure(error));
             })
         )
+    );
+
+    logoutSuccess$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(logoutSuccess),
+                map(() => {
+                    this.responseOK = true
+                    this.router.navigateByUrl('play');
+                })
+            ),
+        { dispatch: false }
     );
 
     logoutRedirect$ = createEffect(

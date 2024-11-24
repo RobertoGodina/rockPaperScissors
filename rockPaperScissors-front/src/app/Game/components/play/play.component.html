@@ -1,0 +1,46 @@
+<div class="game-container mat-typography">
+    <mat-card>
+        <mat-card-content>
+            <div class="choices-container">
+                <!-- Computer choise -->
+                <div class="choice-section">
+                    <h3>Computer</h3>
+                    <div class="choice-box">
+                        <img [src]="'assets/images/' + (animate ? temporaryMove : (gameState$ | async)?.computerMove?.toLocaleLowerCase()) + '.png'"
+                            alt="Computer's Choice" class="game-image" [class.animate]="animate" />
+                    </div>
+                </div>
+
+                <!-- Player choise -->
+                <div class="choice-section player-image">
+                    <h3 class="player-image">You</h3>
+                    <div class="choice-box">
+                        <img [src]="'assets/images/' + (animate ? temporaryMove : (gameState$ | async)?.userMove?.toLowerCase()) + '.png'"
+                            alt="Your Choice" class="game-image" [class.animate]="animate" />
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Result section -->
+            <div class="result-section" *ngIf="!animate && (gameState$ | async)?.result">
+                <mat-card [ngClass]="{
+                    'win': (gameState$ | async)?.result === 'WIN',
+                    'lose': (gameState$ | async)?.result === 'LOSE',
+                    'tie': (gameState$ | async)?.result === 'TIE'
+                  }">
+                    <mat-card-title>
+                        {{ (gameState$ | async)?.result === "TIE" ? "It's a " : "You " }} {{ (gameState$ |
+                        async)?.result }}!
+                    </mat-card-title>
+                </mat-card>
+            </div>
+        </mat-card-content>
+
+        <mat-card-actions class="center-actions">
+            <button mat-raised-button color="primary" *ngFor="let choice of choices" (click)="makeChoice(choice)">
+                {{ choice }}
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
