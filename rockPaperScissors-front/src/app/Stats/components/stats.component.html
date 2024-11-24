@@ -1,0 +1,64 @@
+<div class="stats-container mat-typography">
+    <!-- Stats Card -->
+    <mat-card class="stats-card">
+        <mat-card-header>
+            <mat-card-title>Game Stats</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="charts-container">
+                <div class="chart-wrapper" *ngIf="chartMovesData.length > 0">
+                    <google-chart [title]="chartMovesTitle" [type]="chartType" [data]="chartMovesData"
+                        [options]="chartOptions">
+                    </google-chart>
+                </div>
+                <div class="chart-wrapper" *ngIf="chartSummaryData.length > 0">
+                    <google-chart [title]="chartSummaryTitle" [type]="chartType" [data]="chartSummaryData"
+                        [options]="chartOptions">
+                    </google-chart>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- History Card -->
+    <mat-card class="history-card">
+        <mat-card-header>
+            <mat-card-title>Game History</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-form-field appearance="outline">
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="history.filter = $any($event.target).value.trim().toLowerCase()"
+                    placeholder="Search in history" />
+            </mat-form-field>
+
+            <div class="table-container">
+                <table mat-table [dataSource]="history" class="mat-elevation-z8">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef>ID</th>
+                        <td mat-cell *matCellDef="let game">{{ game.id }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="userMove">
+                        <th mat-header-cell *matHeaderCellDef>Your Move</th>
+                        <td mat-cell *matCellDef="let game">{{ game.userMove }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="computerMove">
+                        <th mat-header-cell *matHeaderCellDef>Computer Move</th>
+                        <td mat-cell *matCellDef="let game">{{ game.computerMove }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="result">
+                        <th mat-header-cell *matHeaderCellDef>Result</th>
+                        <td mat-cell *matCellDef="let game">{{ game.result }}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="playedAt">
+                        <th mat-header-cell *matHeaderCellDef>Date</th>
+                        <td mat-cell *matCellDef="let game">{{ game.playedAt | date: 'short' }}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            <mat-paginator [pageSize]="5" showFirstLastButtons></mat-paginator>
+        </mat-card-content>
+    </mat-card>
+</div>

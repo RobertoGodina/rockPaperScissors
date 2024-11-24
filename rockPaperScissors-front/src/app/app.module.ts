@@ -17,6 +17,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatCardModule } from '@angular/material/card';
 import { GameModule } from './Game/game.module';
 import { MatIconModule } from '@angular/material/icon';
+import { StatsModule } from './Stats/stats.module';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MatIconModule } from '@angular/material/icon';
     }),
     UserModule,
     AuthModule,
-    GameModule
+    GameModule,
+    StatsModule
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),

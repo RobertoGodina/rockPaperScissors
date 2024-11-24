@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
   styleUrl: './play.component.scss'
 })
 export class PlayComponent {
-  choices: string[] = ['rock', 'paper', 'scissors'];
+  choices: string[] = ['Rock', 'Paper', 'Scissors'];
   gameState$: Observable<GameState>;
   animate: boolean = false;
   temporaryMove: string = 'rock';
