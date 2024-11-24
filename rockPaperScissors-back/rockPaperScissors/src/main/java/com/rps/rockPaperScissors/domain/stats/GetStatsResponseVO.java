@@ -1,4 +1,4 @@
-package com.rps.rockPaperScissors.domain.achievements;
+package com.rps.rockPaperScissors.domain.stats;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Generated
-public class GetAchievementsResponseVO {
+public class GetStatsResponseVO {
 
     private int gamesWon;
 

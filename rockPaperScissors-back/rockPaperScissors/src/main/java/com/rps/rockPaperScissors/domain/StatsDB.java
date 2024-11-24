@@ -11,8 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "achievements")
-public class AchievementsDB {
+@Table(name = "stats")
+public class StatsDB {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

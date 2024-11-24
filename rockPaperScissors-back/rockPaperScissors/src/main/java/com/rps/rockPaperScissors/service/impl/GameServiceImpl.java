@@ -1,6 +1,6 @@
 package com.rps.rockPaperScissors.service.impl;
 
-import com.rps.rockPaperScissors.domain.AchievementsDB;
+import com.rps.rockPaperScissors.domain.StatsDB;
 import com.rps.rockPaperScissors.domain.GameHistoryDB;
 import com.rps.rockPaperScissors.domain.UserDB;
 import com.rps.rockPaperScissors.domain.game.GameHistoryResponseVO;
@@ -9,7 +9,7 @@ import com.rps.rockPaperScissors.domain.game.Move;
 import com.rps.rockPaperScissors.domain.game.PlayResponseVO;
 import com.rps.rockPaperScissors.exception.AppErrorCode;
 import com.rps.rockPaperScissors.exception.CustomException;
-import com.rps.rockPaperScissors.repository.AchievementsRepository;
+import com.rps.rockPaperScissors.repository.StatsRepository;
 import com.rps.rockPaperScissors.repository.GameHistoryRepository;
 import com.rps.rockPaperScissors.repository.UserRepository;
 import com.rps.rockPaperScissors.service.GameService;
@@ -28,16 +28,16 @@ public class GameServiceImpl implements GameService {
     private final GameHistoryRepository gameHistoryRepository;
     private final UserRepository userRepository;
     private final GameHistoryMapperService gameHistoryMapperService;
-    private final AchievementsRepository achievementsRepository;
+    private final StatsRepository statsRepository;
 
     public GameServiceImpl(GameHistoryRepository gameHistoryRepository,
                            UserRepository userRepository,
                            GameHistoryMapperService gameHistoryMapperService,
-                           AchievementsRepository achievementsRepository) {
+                           StatsRepository statsRepository) {
         this.gameHistoryRepository = gameHistoryRepository;
         this.gameHistoryMapperService = gameHistoryMapperService;
         this.userRepository = userRepository;
-        this.achievementsRepository = achievementsRepository;
+        this.statsRepository = statsRepository;
     }
 
 
@@ -53,7 +53,7 @@ public class GameServiceImpl implements GameService {
                     .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
             saveGameHistory(user, userMove, computerMove, gameResult);
-            updateAchievements(user, userMove, gameResult);
+            updateStats(user, userMove, gameResult);
         }
 
         return new PlayResponseVO(userMove, computerMove, gameResult);
@@ -72,30 +72,30 @@ public class GameServiceImpl implements GameService {
 
     }
 
-    public void updateAchievements(UserDB user, Move userMove, GameResult gameResult) {
-        AchievementsDB achievements = achievementsRepository.findByUser(user);
+    public void updateStats(UserDB user, Move userMove, GameResult gameResult) {
+        StatsDB stats = statsRepository.findByUser(user);
 
-        if (achievements == null) {
-            achievements = new AchievementsDB();
-            achievements.setUser(user);
+        if (stats == null) {
+            stats = new StatsDB();
+            stats.setUser(user);
         }
 
         switch (userMove) {
-            case SCISSORS -> achievements.setScissorsPlayed(achievements.getScissorsPlayed() + 1);
-            case ROCK -> achievements.setRockPlayed(achievements.getRockPlayed() + 1);
-            case PAPER -> achievements.setPaperPlayed(achievements.getPaperPlayed() + 1);
+            case SCISSORS -> stats.setScissorsPlayed(stats.getScissorsPlayed() + 1);
+            case ROCK -> stats.setRockPlayed(stats.getRockPlayed() + 1);
+            case PAPER -> stats.setPaperPlayed(stats.getPaperPlayed() + 1);
         }
 
         switch (gameResult) {
-            case LOSE -> achievements.setGamesLost(achievements.getGamesLost() + 1);
-            case WIN -> achievements.setGamesWon(achievements.getGamesWon() + 1);
-            case TIE -> achievements.setGamesTied(achievements.getGamesTied() + 1);
+            case LOSE -> stats.setGamesLost(stats.getGamesLost() + 1);
+            case WIN -> stats.setGamesWon(stats.getGamesWon() + 1);
+            case TIE -> stats.setGamesTied(stats.getGamesTied() + 1);
         }
 
-        achievements.setGamesPlayed(achievements.getGamesPlayed() + 1);
+        stats.setGamesPlayed(stats.getGamesPlayed() + 1);
 
         try {
-            achievementsRepository.save(achievements);
+            statsRepository.save(stats);
 
         } catch (Exception e) {
             throw new CustomException(AppErrorCode.BUSI_SQL.getReasonPhrase());

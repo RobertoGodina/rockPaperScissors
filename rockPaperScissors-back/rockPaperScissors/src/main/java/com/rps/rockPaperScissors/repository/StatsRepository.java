@@ -1,11 +1,11 @@
 package com.rps.rockPaperScissors.repository;
 
-import com.rps.rockPaperScissors.domain.AchievementsDB;
+import com.rps.rockPaperScissors.domain.StatsDB;
 import com.rps.rockPaperScissors.domain.UserDB;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface AchievementsRepository extends JpaRepository<AchievementsDB, Long>, JpaSpecificationExecutor<AchievementsDB> {
+public interface StatsRepository extends JpaRepository<StatsDB, Long>, JpaSpecificationExecutor<StatsDB> {
 
-    AchievementsDB findByUser(UserDB user);
+    StatsDB findByUser(UserDB user);
 }
