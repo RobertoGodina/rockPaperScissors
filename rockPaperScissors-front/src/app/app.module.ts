@@ -17,7 +17,7 @@ import { ProfileComponent } from './User/components/profile/profile.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatCardModule } from '@angular/material/card';
 import { GameModule } from './Game/game.module';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -30,6 +30,7 @@ import { GameModule } from './Game/game.module';
     BrowserModule,
     AppRoutingModule,
     MatCardModule,
+    MatIconModule,
     ReactiveFormsModule,
     StoreModule.forRoot(appReducers, {
       runtimeChecks: {

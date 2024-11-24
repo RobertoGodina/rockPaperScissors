@@ -1,15 +1,15 @@
-<p>header works!</p>
-
-<!-- NO AUTH REQUIRED -->
-<div *ngIf="showNoAuthSection">
-  <button (click)="play()">Play</button>
-  <button (click)="login()">Login</button>
-  <button (click)="register()">Register</button>
-</div>
-
-<!-- AUTH REQUIRED -->
-<div *ngIf="showAuthSection">
-  <button (click)="play()">Play</button>
-  <button (click)="profile()">Profile</button>
-  <button (click)="logout()">Logout</button>
-</div>
+<nav class="header">
+  <div class="logo">
+    <span>🎮 GameZone</span>
+  </div>
+  <div *ngIf="showNoAuthSection" class="menu">
+    <button mat-raised-button color="primary" (click)="play()"> Play</button>
+    <button mat-raised-button color="accent" (click)="login()">Login</button>
+    <button mat-raised-button color="warn" (click)="register()">Register</button>
+  </div>
+  <div *ngIf="showAuthSection" class="menu">
+    <button mat-raised-button color="primary" (click)="play()">Play</button>
+    <button mat-raised-button color="accent" (click)="profile()">Profile</button>
+    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+  </div>
+</nav>

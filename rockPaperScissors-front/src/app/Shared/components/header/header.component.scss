@@ -1,75 +1,58 @@
-.error {
-    color: red;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo span {
+  font-size: 28px;
+  color: #ffeeba;
+}
+
+.menu {
+  display: flex;
+  gap: 15px;
+}
+
+button {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 8px 15px;
+  border-radius: 4px;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
   }
-  
-  #loginFeedback {
-    visibility: hidden;
-    min-width: 250px;
-    color: #fff;
-    text-align: center;
-    border-radius: 10px;
-    padding: 16px;
-    z-index: 1;
-    font-size: 14px;
-    margin-left: auto;
-    margin-right: auto;
+
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
   }
-  
-  #loginFeedback.requestOk {
-    background-color: green;
+
+  .logo {
+    margin-bottom: 10px;
   }
-  
-  #loginFeedback.requestKo {
-    background-color: red;
-  }
-  
-  #loginFeedback.show {
-    visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  }
-  
-  @-webkit-keyframes fadein {
-    from {
-      bottom: 0;
-      opacity: 0;
-    }
-    to {
-      bottom: 30px;
-      opacity: 1;
-    }
-  }
-  
-  @keyframes fadein {
-    from {
-      bottom: 0;
-      opacity: 0;
-    }
-    to {
-      bottom: 30px;
-      opacity: 1;
-    }
-  }
-  
-  @-webkit-keyframes fadeout {
-    from {
-      bottom: 30px;
-      opacity: 1;
-    }
-    to {
-      bottom: 0;
-      opacity: 0;
-    }
-  }
-  
-  @keyframes fadeout {
-    from {
-      bottom: 30px;
-      opacity: 1;
-    }
-    to {
-      bottom: 0;
-      opacity: 0;
-    }
-  }
-  
+}
