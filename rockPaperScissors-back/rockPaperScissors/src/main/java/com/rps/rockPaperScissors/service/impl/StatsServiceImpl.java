@@ -4,7 +4,7 @@ import com.rps.rockPaperScissors.domain.StatsDB;
 import com.rps.rockPaperScissors.domain.UserDB;
 import com.rps.rockPaperScissors.domain.stats.GetStatsResponseVO;
 import com.rps.rockPaperScissors.exception.AppErrorCode;
-import com.rps.rockPaperScissors.exception.CustomException;
+import com.rps.rockPaperScissors.exception.BusinessException;
 import com.rps.rockPaperScissors.repository.StatsRepository;
 import com.rps.rockPaperScissors.repository.UserRepository;
 import com.rps.rockPaperScissors.service.StatsService;
@@ -33,7 +33,7 @@ public class StatsServiceImpl implements StatsService {
     @Override
     public GetStatsResponseVO getStats(String authorization) {
         UserDB user = userRepository.findByApiToken(authorization.substring(7))
-                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
+                .orElseThrow(() -> new BusinessException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
         StatsDB stats = statsRepository.findByUser(user);
 

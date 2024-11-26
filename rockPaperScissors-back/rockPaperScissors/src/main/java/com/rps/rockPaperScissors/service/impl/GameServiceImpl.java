@@ -1,16 +1,17 @@
 package com.rps.rockPaperScissors.service.impl;
 
-import com.rps.rockPaperScissors.domain.StatsDB;
 import com.rps.rockPaperScissors.domain.GameHistoryDB;
+import com.rps.rockPaperScissors.domain.StatsDB;
 import com.rps.rockPaperScissors.domain.UserDB;
 import com.rps.rockPaperScissors.domain.game.GameHistoryResponseVO;
 import com.rps.rockPaperScissors.domain.game.GameResult;
 import com.rps.rockPaperScissors.domain.game.Move;
 import com.rps.rockPaperScissors.domain.game.PlayResponseVO;
 import com.rps.rockPaperScissors.exception.AppErrorCode;
-import com.rps.rockPaperScissors.exception.CustomException;
-import com.rps.rockPaperScissors.repository.StatsRepository;
+import com.rps.rockPaperScissors.exception.BusinessException;
+import com.rps.rockPaperScissors.exception.DatabaseOperationException;
 import com.rps.rockPaperScissors.repository.GameHistoryRepository;
+import com.rps.rockPaperScissors.repository.StatsRepository;
 import com.rps.rockPaperScissors.repository.UserRepository;
 import com.rps.rockPaperScissors.service.GameService;
 import com.rps.rockPaperScissors.service.mapper.GameHistoryMapperService;
@@ -50,7 +51,7 @@ public class GameServiceImpl implements GameService {
         if (authorization != null) {
 
             UserDB user = userRepository.findByApiToken(authorization.substring(7))
-                    .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
+                    .orElseThrow(() -> new BusinessException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
             saveGameHistory(user, userMove, computerMove, gameResult);
             updateStats(user, userMove, gameResult);
@@ -63,10 +64,10 @@ public class GameServiceImpl implements GameService {
     public List<GameHistoryResponseVO> gameHistory(String authorization) {
 
         UserDB user = userRepository.findByApiToken(authorization.substring(7))
-                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
+                .orElseThrow(() -> new BusinessException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
         List<GameHistoryDB> gameHistories = gameHistoryRepository.findByUser(user)
-                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_USER.getReasonPhrase()));
+                .orElseThrow(() -> new BusinessException(AppErrorCode.BUSI_USER.getReasonPhrase()));
 
         return gameHistoryMapperService.getGameHistories(gameHistories);
 
@@ -98,7 +99,7 @@ public class GameServiceImpl implements GameService {
             statsRepository.save(stats);
 
         } catch (Exception e) {
-            throw new CustomException(AppErrorCode.BUSI_SQL.getReasonPhrase());
+            throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase());
         }
     }
 
@@ -113,7 +114,7 @@ public class GameServiceImpl implements GameService {
             gameHistoryRepository.save(gameHistoryDB);
 
         } catch (Exception e) {
-            throw new CustomException(AppErrorCode.BUSI_SQL.getReasonPhrase());
+            throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase());
         }
     }
 
@@ -126,7 +127,7 @@ public class GameServiceImpl implements GameService {
             case ROCK -> computerMove == Move.SCISSORS ? GameResult.WIN : GameResult.LOSE;
             case PAPER -> computerMove == Move.ROCK ? GameResult.WIN : GameResult.LOSE;
             case SCISSORS -> computerMove == Move.PAPER ? GameResult.WIN : GameResult.LOSE;
-            default -> throw new IllegalArgumentException("Invalid move: " + userMove);
+            default -> throw new BusinessException("Invalid move: " + userMove);
         };
     }
 }

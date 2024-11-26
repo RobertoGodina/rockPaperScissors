@@ -5,7 +5,8 @@ import com.rps.rockPaperScissors.domain.token.ApiTokenVO;
 import com.rps.rockPaperScissors.domain.user.GetUserResponseVO;
 import com.rps.rockPaperScissors.domain.user.UpdateUserRequestVO;
 import com.rps.rockPaperScissors.exception.AppErrorCode;
-import com.rps.rockPaperScissors.exception.CustomException;
+import com.rps.rockPaperScissors.exception.BusinessException;
+import com.rps.rockPaperScissors.exception.DatabaseOperationException;
 import com.rps.rockPaperScissors.repository.UserRepository;
 import com.rps.rockPaperScissors.service.JwtTokenService;
 import com.rps.rockPaperScissors.service.UserService;
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public GetUserResponseVO getUser(String authorization) {
         UserDB user = userRepository.findByApiToken(authorization.substring(7))
-                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
+                .orElseThrow(() -> new BusinessException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
         return userDatabaseMapperService.buildReturnUser(user);
     }
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
     public ApiTokenVO updateUser(UpdateUserRequestVO updateUserRequest, String authorization) {
 
         UserDB user = userRepository.findByApiToken(authorization.substring(7))
-                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
+                .orElseThrow(() -> new BusinessException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
         ApiTokenVO response = new ApiTokenVO(jwtTokenService.generateToken(updateUserRequest.getUsername()),
                 jwtTokenService.generateRefreshToken(updateUserRequest.getUsername()));
@@ -62,7 +63,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
         } catch (Exception e) {
             log.severe("Update user error" + e.getMessage());
-            throw new CustomException(AppErrorCode.BUSI_SQL.getReasonPhrase());
+            throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase());
         }
 
         return response;

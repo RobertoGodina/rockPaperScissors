@@ -36,10 +36,7 @@ management:
     health:
       probes:
         enabled: true
-        
-#logging.level.org.apache.http: DEBUG
-#logging.level.org.springframework.web.client.RestTemplate: DEBUG
-#logging.level.org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor: DEBUG
+
 #logging.level.ROOT: DEBUG
 
 jwt:

@@ -6,7 +6,8 @@ import com.rps.rockPaperScissors.domain.register.UserRequestVO;
 import com.rps.rockPaperScissors.domain.token.ApiTokenVO;
 import com.rps.rockPaperScissors.domain.token.RefreshTokenRequestVO;
 import com.rps.rockPaperScissors.exception.AppErrorCode;
-import com.rps.rockPaperScissors.exception.CustomException;
+import com.rps.rockPaperScissors.exception.BusinessException;
+import com.rps.rockPaperScissors.exception.DatabaseOperationException;
 import com.rps.rockPaperScissors.repository.UserRepository;
 import com.rps.rockPaperScissors.service.AuthService;
 import com.rps.rockPaperScissors.service.JwtTokenService;
@@ -40,11 +41,11 @@ public class AuthServiceImpl implements AuthService {
     public void register(UserRequestVO user) {
 
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new CustomException(AppErrorCode.BUSI_USERNAME.getReasonPhrase());
+            throw new BusinessException(AppErrorCode.BUSI_USERNAME.getReasonPhrase());
         }
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new CustomException(AppErrorCode.BUSI_EMAIL.getReasonPhrase());
+            throw new BusinessException(AppErrorCode.BUSI_EMAIL.getReasonPhrase());
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -54,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
             userRepository.save(userDBEntity);
         } catch (Exception e) {
             log.severe("Database register error" + e.getMessage());
-            throw new RuntimeException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
+            throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
         }
     }
 
@@ -64,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
         UserDB user = validateUser(loginRequest.getUsername());
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new CustomException("Invalid username or password");
+            throw new BusinessException("Invalid username or password");
         }
 
         ApiTokenVO response = new ApiTokenVO(jwtTokenService.generateToken(loginRequest.getUsername()),
@@ -77,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
             userRepository.save(user);
         } catch (Exception e) {
             log.severe("Database login error" + e.getMessage());
-            throw new RuntimeException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
+            throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
         }
         return response;
     }
@@ -88,7 +89,7 @@ public class AuthServiceImpl implements AuthService {
         UserDB user = validateUser(refreshTokenRequest.getUsername());
 
         if (!refreshTokenRequest.getRefreshApiToken().equals(user.getRefreshToken())) {
-            throw new CustomException(AppErrorCode.BUSI_REFRESH_TOKEN.getReasonPhrase());
+            throw new BusinessException(AppErrorCode.BUSI_REFRESH_TOKEN.getReasonPhrase());
         }
 
         ApiTokenVO response = new ApiTokenVO(jwtTokenService.generateToken(user.getUsername()),
@@ -101,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
             userRepository.save(user);
         } catch (Exception e) {
             log.severe("Database login error" + e.getMessage());
-            throw new RuntimeException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
+            throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
         }
         return response;
     }
@@ -110,7 +111,7 @@ public class AuthServiceImpl implements AuthService {
     public void logout(String authorization) {
 
         UserDB user = userRepository.findByApiToken(authorization.substring(7))
-                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
+                .orElseThrow(() -> new DatabaseOperationException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
         user.setApiToken(null);
         user.setRefreshToken(null);
@@ -119,12 +120,12 @@ public class AuthServiceImpl implements AuthService {
             userRepository.save(user);
         } catch (Exception e) {
             log.severe("Database logout error" + e.getMessage());
-            throw new RuntimeException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
+            throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
         }
     }
 
     private UserDB validateUser(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new CustomException(AppErrorCode.BUSI_USER.getReasonPhrase()));
+                .orElseThrow(() -> new BusinessException(AppErrorCode.BUSI_USER.getReasonPhrase()));
     }
 }
