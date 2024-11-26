@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoginDTO } from '../models/login.dto';
+import { RefreshTokenDTO } from '../models/refreshToken.dto';
 
 interface AuthToken {
   apiToken: string;
@@ -26,5 +27,9 @@ export class AuthService {
 
   logout(): Observable<void> {
     return this.http.post<void>(this.urlRockPaperScissorsApi + '/logout', null);
+  }
+
+  refreshToken(refreshApiToken: RefreshTokenDTO): Observable<AuthToken> {
+    return this.http.post<AuthToken>(this.urlRockPaperScissorsApi + '/refresh', refreshApiToken);
   }
 }
