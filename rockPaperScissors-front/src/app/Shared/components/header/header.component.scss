@@ -41,6 +41,21 @@ button:hover {
   transition: all 0.2s ease-in-out;
 }
 
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo span {
+  font-size: 28px;
+  color: #ffeeba;
+  line-height: 1.2;
+  padding: 2px 0;
+}
+
 @media (max-width: 600px) {
   .header {
     flex-direction: column;
@@ -53,6 +68,18 @@ button:hover {
   }
 
   .logo {
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo span {
+    font-size: 22px;
+    line-height: 1.4;
+  }
+
+  .logo-img {
+    height: 50px;
+    width: auto;
   }
 }
