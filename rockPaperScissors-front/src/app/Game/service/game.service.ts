@@ -6,6 +6,8 @@ export interface GameResponse {
   userMove: string;
   computerMove: string;
   result: string;
+  score: number | null;
+  consecutiveWon: number | null;
 }
 
 @Injectable({

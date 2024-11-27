@@ -6,6 +6,8 @@ export interface GameState {
     userMove: string | null;
     computerMove: string | null;
     result: string | null;
+    score: number | null;
+    consecutiveWon: number | null;
     loading: boolean;
     error: any;
 }
@@ -14,6 +16,8 @@ export const initialState: GameState = {
     userMove: "rock",
     computerMove: "rock",
     result: null,
+    score: null,
+    consecutiveWon: null,
     loading: false,
     error: null,
 };
@@ -25,6 +29,8 @@ export const _gameReducer = createReducer(
         userMove,
         computerMove: null,
         result: null,
+        score: null,
+        consecutiveWon: null,
         loading: true,
         error: null,
     })),
@@ -33,6 +39,8 @@ export const _gameReducer = createReducer(
         userMove: gameResponse.userMove,
         computerMove: gameResponse.computerMove,
         result: gameResponse.result,
+        consecutiveWon: gameResponse.consecutiveWon,
+        score: gameResponse.score,
         loading: false,
     })),
     on(GameActions.playGameFailure, (state, { payload }) => ({

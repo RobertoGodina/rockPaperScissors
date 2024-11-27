@@ -39,7 +39,7 @@ export class StatsComponent implements OnInit {
     legend: { position: 'bottom' },
   };
 
-  displayedColumns: string[] = ['id', 'userMove', 'computerMove', 'result', 'playedAt'];
+  displayedColumns: string[] = ['id', 'userMove', 'computerMove', 'result', 'score', 'playedAt'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -71,7 +71,7 @@ export class StatsComponent implements OnInit {
     });
 
     this.history$.pipe(take(2)).subscribe((history) => {
-      this.history.data = history;
+      this.history.data = history.reverse();
       this.history.paginator = this.paginator;
     });
   }
