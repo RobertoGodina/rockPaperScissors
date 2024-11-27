@@ -1,6 +1,7 @@
 package com.rps.rockPaperScissors.service.impl;
 
 import com.rps.rockPaperScissors.domain.UserDB;
+import com.rps.rockPaperScissors.domain.register.UserRequestVO;
 import com.rps.rockPaperScissors.domain.token.ApiTokenVO;
 import com.rps.rockPaperScissors.domain.user.GetUserResponseVO;
 import com.rps.rockPaperScissors.domain.user.UpdateUserRequestVO;
@@ -67,5 +68,27 @@ public class UserServiceImpl implements UserService {
         }
 
         return response;
+    }
+
+    @Override
+    public void register(UserRequestVO user) {
+
+        if (userRepository.existsByUsername(user.getUsername())) {
+            throw new BusinessException(AppErrorCode.BUSI_USERNAME.getReasonPhrase());
+        }
+
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new BusinessException(AppErrorCode.BUSI_EMAIL.getReasonPhrase());
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        UserDB userDBEntity = userDatabaseMapperService.buildUserEntity(user);
+
+        try {
+            userRepository.save(userDBEntity);
+        } catch (Exception e) {
+            log.severe("Database register error" + e.getMessage());
+            throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
+        }
     }
 }

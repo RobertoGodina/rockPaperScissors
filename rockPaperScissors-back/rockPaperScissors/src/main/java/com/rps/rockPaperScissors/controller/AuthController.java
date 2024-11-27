@@ -1,7 +1,6 @@
 package com.rps.rockPaperScissors.controller;
 
 import com.rps.rockPaperScissors.domain.login.LoginRequestVO;
-import com.rps.rockPaperScissors.domain.register.UserRequestVO;
 import com.rps.rockPaperScissors.domain.token.ApiTokenVO;
 import com.rps.rockPaperScissors.domain.token.RefreshTokenRequestVO;
 import com.rps.rockPaperScissors.service.AuthService;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -32,16 +30,6 @@ public class AuthController {
         MDC.put("correlationId", correlationId != null ? correlationId : UUID.randomUUID().toString());
 
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginRequest));
-    }
-
-    @PostMapping(value = "/register", produces = {"application/json"})
-    public ResponseEntity<String> register(
-            @Valid @RequestBody UserRequestVO userRequest,
-            @RequestHeader(required = false, name = "X-Correlation-Id") String correlationId) {
-        MDC.put("correlationId", correlationId != null ? correlationId : UUID.randomUUID().toString());
-
-        authService.register(userRequest);
-        return ResponseEntity.created(URI.create("")).build();
     }
 
     @PostMapping(value = "/refresh", produces = {"application/json"})

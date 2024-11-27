@@ -38,28 +38,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void register(UserRequestVO user) {
-
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw new BusinessException(AppErrorCode.BUSI_USERNAME.getReasonPhrase());
-        }
-
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new BusinessException(AppErrorCode.BUSI_EMAIL.getReasonPhrase());
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        UserDB userDBEntity = userDatabaseMapperService.buildUserEntity(user);
-
-        try {
-            userRepository.save(userDBEntity);
-        } catch (Exception e) {
-            log.severe("Database register error" + e.getMessage());
-            throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
-        }
-    }
-
-    @Override
     public ApiTokenVO login(LoginRequestVO loginRequest) {
 
         UserDB user = validateUser(loginRequest.getUsername());
