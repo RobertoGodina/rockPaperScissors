@@ -15,4 +15,8 @@ public class PlayResponseVO {
     private Move computerMove;
 
     private GameResult result;
+
+    private int score;
+
+    private int consecutiveWon;
 }

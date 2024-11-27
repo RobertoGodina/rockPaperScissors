@@ -29,4 +29,6 @@ public class StatsDB {
     private int rockPlayed = 0;
     private int paperPlayed = 0;
     private int scissorsPlayed = 0;
+    private int gamePoints = 0;
+    private int consecutiveWon = 0;
 }

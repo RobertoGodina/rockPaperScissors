@@ -48,16 +48,19 @@ public class GameServiceImpl implements GameService {
         Move computerMove = Move.getRandomMove();
         GameResult gameResult = decideWinner(userMove, computerMove);
 
+        PlayResponseVO response = new PlayResponseVO(userMove, computerMove, gameResult, 0 ,0);
+
         if (authorization != null) {
 
             UserDB user = userRepository.findByApiToken(authorization.substring(7))
                     .orElseThrow(() -> new BusinessException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
-            saveGameHistory(user, userMove, computerMove, gameResult);
-            updateStats(user, userMove, gameResult);
+            response = updateStats(user, userMove, gameResult, response);
+            saveGameHistory(user, userMove, computerMove, gameResult, response.getScore());
+
         }
 
-        return new PlayResponseVO(userMove, computerMove, gameResult);
+        return response;
     }
 
     @Override
@@ -73,7 +76,7 @@ public class GameServiceImpl implements GameService {
 
     }
 
-    public void updateStats(UserDB user, Move userMove, GameResult gameResult) {
+    public PlayResponseVO updateStats(UserDB user, Move userMove, GameResult gameResult, PlayResponseVO playResponse) {
         StatsDB stats = statsRepository.findByUser(user);
 
         if (stats == null) {
@@ -87,10 +90,26 @@ public class GameServiceImpl implements GameService {
             case PAPER -> stats.setPaperPlayed(stats.getPaperPlayed() + 1);
         }
 
+        int score = stats.getGamePoints();
+        int consecutiveWon = stats.getConsecutiveWon();
         switch (gameResult) {
-            case LOSE -> stats.setGamesLost(stats.getGamesLost() + 1);
-            case WIN -> stats.setGamesWon(stats.getGamesWon() + 1);
-            case TIE -> stats.setGamesTied(stats.getGamesTied() + 1);
+            case LOSE -> {
+                stats.setGamesLost(stats.getGamesLost() + 1);
+                stats.setConsecutiveWon(0);
+            }
+            case WIN -> {
+                int gamePoints = stats.getGamePoints() + (100 * (Math.max(stats.getConsecutiveWon(), 1)));
+
+                score = gamePoints;
+                consecutiveWon = stats.getConsecutiveWon() + 1;
+
+                stats.setGamesWon(stats.getGamesWon() + 1) ;
+                stats.setConsecutiveWon(consecutiveWon);
+                stats.setGamePoints(gamePoints);
+            }
+            case TIE -> {
+                stats.setGamesTied(stats.getGamesTied() + 1);
+            }
         }
 
         stats.setGamesPlayed(stats.getGamesPlayed() + 1);
@@ -101,14 +120,20 @@ public class GameServiceImpl implements GameService {
         } catch (Exception e) {
             throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase());
         }
+
+        playResponse.setConsecutiveWon(consecutiveWon);
+        playResponse.setScore(score);
+
+        return playResponse;
     }
 
-    public void saveGameHistory(UserDB user, Move userMove, Move computerMove, GameResult gameResult) {
+    public void saveGameHistory(UserDB user, Move userMove, Move computerMove, GameResult gameResult, int score) {
         GameHistoryDB gameHistoryDB = new GameHistoryDB();
         gameHistoryDB.setUser(user);
         gameHistoryDB.setUserMove(userMove);
         gameHistoryDB.setComputerMove(computerMove);
         gameHistoryDB.setResult(gameResult);
+        gameHistoryDB.setScore(score);
 
         try {
             gameHistoryRepository.save(gameHistoryDB);

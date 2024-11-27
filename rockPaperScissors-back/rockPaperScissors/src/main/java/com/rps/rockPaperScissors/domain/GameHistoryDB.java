@@ -36,6 +36,9 @@ public class GameHistoryDB {
     @Column(nullable = false)
     private GameResult result;
 
+    @Column(nullable = false)
+    private int score;
+
     @Column(name = "played_at")
     @CreationTimestamp
     private LocalDateTime playedAt;

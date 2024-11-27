@@ -20,6 +20,8 @@ public class GameHistoryResponseVO {
 
     private GameResult result;
 
+    private int score;
+
     private LocalDateTime playedAt;
 
 }
