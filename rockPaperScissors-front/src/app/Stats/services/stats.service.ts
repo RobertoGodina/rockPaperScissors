@@ -23,6 +23,11 @@ export class StatsService {
     return this.http.get<StatsDTO>(this.urlRockPaperScissorsApi + this.statsController);
   }
 
+
+  getUsersStats(): Observable<StatsDTO[]> {
+    return this.http.get<StatsDTO[]>(this.urlRockPaperScissorsApi + this.statsController + '/allStats');
+  }
+
   getGameHistory(): Observable<HistoryDTO[]> {
     return this.http.get<HistoryDTO[]>(this.urlRockPaperScissorsApi + this.gameController + '/gameHistory');
   }

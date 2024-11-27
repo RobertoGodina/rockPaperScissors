@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import * as StatsActions from '../actions/stats.action';
-import { StatsState } from '../reducers';
-import { StatsDTO } from '../models/stats.dto';
-import { HistoryDTO } from '../models/history.dto';
+import * as StatsActions from '../../actions/stats.action';
+import { StatsDTO } from '../../models/stats.dto';
+import { HistoryDTO } from '../../models/history.dto';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { ChartType } from 'angular-google-charts';
+import { StatsState } from '../../reducers';
 
 @Component({
   selector: 'app-stats',

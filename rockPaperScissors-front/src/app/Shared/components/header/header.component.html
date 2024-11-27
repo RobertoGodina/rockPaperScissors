@@ -7,11 +7,13 @@
     <button mat-raised-button color="primary" (click)="play()"> Play</button>
     <button mat-raised-button color="accent" (click)="login()">Login</button>
     <button mat-raised-button color="warn" (click)="register()">Register</button>
+    <button mat-raised-button color="warn" (click)="rating()">Rating</button>
   </div>
   <div *ngIf="showAuthSection" class="menu">
     <button mat-raised-button color="primary" (click)="play()">Play</button>
     <button mat-raised-button color="accent" (click)="profile()">Profile</button>
     <button mat-raised-button color="accent" (click)="stats()">Stats</button>
+    <button mat-raised-button color="warn" (click)="rating()">Rating</button>
     <button mat-raised-button color="warn" (click)="logout()">Logout</button>
   </div>
 </nav>

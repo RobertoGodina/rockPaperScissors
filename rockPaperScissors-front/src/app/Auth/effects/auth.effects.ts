@@ -6,6 +6,9 @@ import { Router } from '@angular/router';
 import { login, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess } from '../actions';
 import { AuthService } from '../services/auth.service';
 import { SharedService } from 'src/app/Shared/services/shared.service';
+import { Store } from '@ngrx/store';
+import { resetGame } from 'src/app/Game/actions';
+import { resetStats } from 'src/app/Stats/actions';
 
 @Injectable()
 export class AuthEffects {
@@ -16,7 +19,8 @@ export class AuthEffects {
         private actions$: Actions,
         private authService: AuthService,
         private router: Router,
-        private sharedService: SharedService
+        private sharedService: SharedService,
+        private store: Store
     ) {
         this.responseOK = false;
     }
@@ -100,6 +104,8 @@ export class AuthEffects {
                 ofType(logoutSuccess),
                 map(() => {
                     this.responseOK = true
+                    this.store.dispatch(resetGame());
+                    this.store.dispatch(resetStats());
                     this.router.navigateByUrl('play');
                 })
             ),

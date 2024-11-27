@@ -16,3 +16,5 @@ export const playGameFailure = createAction(
     '[Game] Play Game Failure',
     props<{ payload: HttpErrorResponse }>()
 );
+
+export const resetGame = createAction('[Game] Reset Game');

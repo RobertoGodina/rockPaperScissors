@@ -5,7 +5,8 @@ import { LoginComponent } from './Auth/components/login.component';
 import { RegisterComponent } from './User/components/register/register.component';
 import { ProfileComponent } from './User/components/profile/profile.component';
 import { AuthGuard } from './Shared/guards/auth.guard';
-import { StatsComponent } from './Stats/components/stats.component';
+import { StatsComponent } from './Stats/components/userStats/stats.component';
+import { RatingComponent } from './Stats/components/rating/rating.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'play',
     component: PlayComponent,
+  },
+  {
+    path: 'rating',
+    component: RatingComponent,
   },
   {
     path: 'profile',

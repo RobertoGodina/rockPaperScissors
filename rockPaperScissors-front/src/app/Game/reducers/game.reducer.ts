@@ -47,7 +47,11 @@ export const _gameReducer = createReducer(
         ...state,
         loading: false,
         error: { payload },
+    })),
+    on(GameActions.resetGame, () => ({
+        ...initialState
     }))
+
 );
 
 export function gameReducer(

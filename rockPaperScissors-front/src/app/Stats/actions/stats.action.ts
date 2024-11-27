@@ -12,6 +12,7 @@ export const loadStatsFailure = createAction(
     '[Stats] Load Stats Failure',
     props<{ payload: HttpErrorResponse }>()
 );
+export const resetStats = createAction('[Stats] Reset Stats');
 
 export const loadHistory = createAction('[History] Load History');
 export const loadHistorySuccess = createAction(
@@ -22,3 +23,8 @@ export const loadHistoryFailure = createAction(
     '[History] Load History Failure',
     props<{ payload: HttpErrorResponse }>()
 );
+
+export const loadRating = createAction('[Rating] Load Rating');
+export const loadRatingSuccess = createAction('[Rating] Load Rating Success', props<{ usersStats: StatsDTO[] }>());
+export const loadRatingFailure = createAction('[Rating] Load Rating Failure', props<{ error: any }>());
+

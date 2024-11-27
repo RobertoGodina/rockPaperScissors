@@ -25,7 +25,9 @@ export class InterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (req.url.includes("/login")) {
+    const excludeRoutes = ["/login", "/register", "/rating"];
+
+    if (excludeRoutes.some(route => req.url.includes(route))) {
       return next.handle(req)
     }
     return this.store.select('auth').pipe(

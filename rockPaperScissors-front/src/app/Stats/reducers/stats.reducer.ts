@@ -1,4 +1,4 @@
-import { createReducer, on } from '@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
 import * as StatsActions from '../actions/stats.action';
 import { StatsDTO } from '../models/stats.dto';
 import { HistoryDTO } from '../models/history.dto';
@@ -11,13 +11,13 @@ export interface StatsState {
 }
 
 export const initialState: StatsState = {
-    stats: new StatsDTO(0, 0, 0, 0, 0, 0, 0),
+    stats: new StatsDTO(0, 0, 0, 0, 0, 0, 0, 0, null),
     history: [],
     loading: false,
     error: null,
 };
 
-export const statsReducer = createReducer(
+export const _statsReducer = createReducer(
     initialState,
     on(StatsActions.loadStats, StatsActions.loadHistory, (state) => ({
         ...state,
@@ -38,5 +38,15 @@ export const statsReducer = createReducer(
         ...state,
         loading: false,
         error: { payload },
+    })),
+    on(StatsActions.resetStats, () => ({
+        ...initialState
     }))
 );
+
+export function statsReducer(
+    state: StatsState | undefined,
+    action: Action
+): StatsState {
+    return _statsReducer(state, action);
+}

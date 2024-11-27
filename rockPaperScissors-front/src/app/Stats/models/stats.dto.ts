@@ -6,6 +6,8 @@ export class StatsDTO {
     rockPlayed: number = 0;
     paperPlayed: number = 0;
     scissorsPlayed: number = 0;
+    gamePoints: number = 0;
+    username: string | null;
 
     constructor(
         gamesWon: number,
@@ -15,6 +17,8 @@ export class StatsDTO {
         rockPlayed: number,
         paperPlayed: number,
         scissorsPlayed: number,
+        gamePoints: number,
+        username: string | null
     ) {
         this.gamesWon = gamesWon;
         this.gamesLost = gamesLost;
@@ -23,6 +27,8 @@ export class StatsDTO {
         this.rockPlayed = rockPlayed;
         this.paperPlayed = paperPlayed;
         this.scissorsPlayed = scissorsPlayed;
+        this.gamePoints = gamePoints;
+        this.username = username;
 
     }
 }

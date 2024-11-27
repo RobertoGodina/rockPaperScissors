@@ -36,6 +36,12 @@ export class PlayComponent implements OnInit {
         this.showScore = false;
       }
     });
+
+    this.store.dispatch(GameActions.resetGame());
+    this.animate = false;
+    this.temporaryMove = 'rock';
+    this.waitingForBackResponse = false;
+
   }
 
   makeChoice(choice: string): void {
