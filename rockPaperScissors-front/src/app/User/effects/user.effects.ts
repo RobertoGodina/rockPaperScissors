@@ -71,7 +71,7 @@ export class UserEffects {
           this.responseOK = false;
           this.errorResponse = {
             statusCode: error.payload.status,
-            message: error.payload.error,
+            message: error.payload.error.message,
           };;
           this.sharedService.errorLog(error.payload.error);
         })
@@ -123,7 +123,13 @@ export class UserEffects {
           catchError((error) => {
             return of(UserActions.updateUserFailure({ payload: error }));
           }),
-          finalize(() => {
+          finalize(async () => {
+            await this.sharedService.managementToast(
+              'profileFeedback',
+              this.responseOK,
+              this.errorResponse
+            );
+
             if (this.responseOK) {
               this.router.navigateByUrl('play');
             }
@@ -159,12 +165,11 @@ export class UserEffects {
           this.responseOK = false;
           this.errorResponse = {
             statusCode: error.payload.status,
-            message: error.payload.error,
+            message: error.payload.error.message,
           };
           this.sharedService.errorLog(error.payload.error);
         })
       ),
     { dispatch: false }
   );
-
 }
