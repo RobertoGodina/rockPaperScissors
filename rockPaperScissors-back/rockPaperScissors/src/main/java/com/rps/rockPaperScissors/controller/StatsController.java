@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/stats")
-@CrossOrigin(origins = "http://localhost:4200")
 public class StatsController {
 
     public StatsService statsService;

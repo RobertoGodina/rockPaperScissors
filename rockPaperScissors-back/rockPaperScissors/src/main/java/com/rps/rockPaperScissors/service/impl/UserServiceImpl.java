@@ -51,11 +51,11 @@ public class UserServiceImpl implements UserService {
         UserDB user = userRepository.findByApiToken(authorization.substring(7))
                 .orElseThrow(() -> new BusinessException(AppErrorCode.BUSI_APITOKEN.getReasonPhrase()));
 
+        user = validateUserData(user, updateUserRequest);
+
         ApiTokenVO response = new ApiTokenVO(jwtTokenService.generateToken(updateUserRequest.getUsername()),
                 jwtTokenService.generateRefreshToken(updateUserRequest.getUsername()));
 
-        user.setEmail(updateUserRequest.getEmail());
-        user.setUsername(updateUserRequest.getUsername());
         user.setPassword(passwordEncoder.encode(updateUserRequest.getPassword()));
         user.setApiToken(response.getApiToken());
         user.setRefreshToken(response.getRefreshApiToken());
@@ -90,5 +90,26 @@ public class UserServiceImpl implements UserService {
             log.severe("Database register error" + e.getMessage());
             throw new DatabaseOperationException(AppErrorCode.BUSI_SQL.getReasonPhrase(), e);
         }
+    }
+
+    UserDB validateUserData(UserDB user, UpdateUserRequestVO updateUserRequest){
+
+        if (updateUserRequest.getEmail() != null && !updateUserRequest.getEmail().equals(user.getEmail())) {
+            boolean emailExists = userRepository.existsByEmail(updateUserRequest.getEmail());
+            if (emailExists) {
+                throw new BusinessException(AppErrorCode.BUSI_EMAIL.getReasonPhrase());
+            }
+            user.setEmail(updateUserRequest.getEmail());
+        }
+
+        if (updateUserRequest.getUsername() != null && !updateUserRequest.getUsername().equals(user.getUsername())) {
+            boolean usernameExists = userRepository.existsByUsername(updateUserRequest.getUsername());
+            if (usernameExists) {
+                throw new BusinessException(AppErrorCode.BUSI_USERNAME.getReasonPhrase());
+            }
+            user.setUsername(updateUserRequest.getUsername());
+        }
+
+        return user;
     }
 }

@@ -43,6 +43,9 @@ jwt:
   secretKey: ${jwtSecretKey}}
   refreshSecretKey: ${jwtRefreshSecretKey}}
 
+cors:
+  allowed-origins: "http://localhost:4200"
+
 timeouts:
   MAX_TOTAL_CONNECTIONS: 5
   CONNECT_TIMEOUT: 9000

@@ -14,7 +14,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/game")
-@CrossOrigin(origins = "http://localhost:4200")
 public class GameController {
 
     public GameService gameService;
