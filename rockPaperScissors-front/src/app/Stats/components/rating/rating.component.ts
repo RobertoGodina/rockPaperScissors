@@ -29,7 +29,9 @@ export class RatingComponent implements OnInit {
     this.store.dispatch(StatsActions.loadRating());
 
     this.rating$.pipe(take(2)).subscribe((rating) => {
-      this.rating.data = rating.reverse()!;
+      const sortedRating = [...rating].sort((a, b) => b.gamePoints - a.gamePoints);
+
+      this.rating.data = sortedRating;
       this.rating.paginator = this.paginator;
     });
   }
