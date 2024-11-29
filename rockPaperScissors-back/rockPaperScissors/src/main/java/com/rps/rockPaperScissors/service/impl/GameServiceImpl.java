@@ -98,10 +98,10 @@ public class GameServiceImpl implements GameService {
                 stats.setConsecutiveWon(0);
             }
             case WIN -> {
-                int gamePoints = stats.getGamePoints() + (100 * (Math.max(stats.getConsecutiveWon(), 1)));
-
-                score = gamePoints;
                 consecutiveWon = stats.getConsecutiveWon() + 1;
+
+                int gamePoints = stats.getGamePoints() + (100 * (Math.max(consecutiveWon, 1)));
+                score = gamePoints;
 
                 stats.setGamesWon(stats.getGamesWon() + 1) ;
                 stats.setConsecutiveWon(consecutiveWon);

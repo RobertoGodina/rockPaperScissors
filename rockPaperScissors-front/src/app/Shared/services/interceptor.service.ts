@@ -59,8 +59,6 @@ export class InterceptorService implements HttpInterceptor {
                 refreshApiToken: newToken.refreshApiToken,
               };
 
-              console.log("Asdasdsa")
-
               this.store.dispatch(updateCredentials({ credentials }))
 
               return next.handle(req)
